@@ -1,0 +1,27 @@
+{
+  "name": "auth_service",
+  "version": "1.0.0",
+  "description": "user management ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node src/server.js",
+    "formatfix": "prettier . --write",
+    "formatcheck": "prettier . --check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adarsh-naik-2004/bats-auth_service.git"
+  },
+  "author": "Adarsh Naik <adarshnaik270@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adarsh-naik-2004/bats-auth_service/issues"
+  },
+  "homepage": "https://github.com/adarsh-naik-2004/bats-auth_service#readme",
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "prettier": "3.5.3",
+    "typescript": "^5.8.2"
+  }
+}
