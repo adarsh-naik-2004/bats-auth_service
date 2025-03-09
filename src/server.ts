@@ -4,7 +4,6 @@ function welcome(name: string) {
         name: 'wo',
     }
     const u1 = user.name
-    return name
+    return name + u1
 }
-welcome('adarsh')
 welcome('adarsh')
