@@ -34,8 +34,8 @@
     },
     "lint-staged": {
         "*.ts": [
-            "npm run formatfix",
-            "npm run lintfix"
+          "prettier --write",
+          "eslint --fix"
         ]
     },
     "dependencies": {
