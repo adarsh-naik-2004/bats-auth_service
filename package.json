@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "node src/server.js",
+        "dev": "nodemon src/server.ts",
         "formatfix": "prettier . --write",
         "formatcheck": "prettier . --check",
         "lintfix": "eslint . --fix",
@@ -24,21 +24,25 @@
     "homepage": "https://github.com/adarsh-naik-2004/bats-auth_service#readme",
     "devDependencies": {
         "@eslint/js": "^9.22.0",
+        "@types/express": "^5.0.0",
         "@types/node": "^22.13.10",
         "eslint": "^9.22.0",
         "husky": "^9.1.7",
         "lint-staged": "^15.4.3",
+        "nodemon": "^3.1.9",
         "prettier": "3.5.3",
+        "ts-node": "^10.9.2",
         "typescript": "^5.8.2",
         "typescript-eslint": "^8.26.0"
     },
     "lint-staged": {
         "*.ts": [
-          "prettier --write",
-          "eslint --fix"
+            "prettier --write",
+            "eslint --fix"
         ]
     },
     "dependencies": {
-        "dotenv": "^16.4.7"
+        "dotenv": "^16.4.7",
+        "express": "^4.21.2"
     }
 }
