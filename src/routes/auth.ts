@@ -3,17 +3,18 @@ import { AuthController } from '../controllers/AuthController'
 import { UserService } from '../services/UserService'
 import { AppDataSource } from '../config/data-source'
 import { User } from '../entity/User'
+import logger from '../config/logger'
 
 const router = express.Router()
 
+// Initialize User Repository & Service
 const userRepository = AppDataSource.getRepository(User)
-
 const userService = new UserService(userRepository)
+const authController = new AuthController(userService, logger)
 
-const authController = new AuthController(userService)
-
-// inversify
-
-router.post('/register', (req, res) => authController.register(req, res))
+// Define Routes
+router.post('/register', (req, res, next) =>
+    authController.register(req, res, next),
+)
 
 export default router

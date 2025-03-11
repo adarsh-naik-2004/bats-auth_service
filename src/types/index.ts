@@ -1,3 +1,5 @@
+import { Request } from 'express'
+
 export interface UserData {
     firstName: string
     lastName: string
