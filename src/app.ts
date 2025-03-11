@@ -6,6 +6,8 @@ import 'reflect-metadata'
 
 const app = express()
 
+app.use(express.json())
+
 app.get('/', (req, res) => {
     // const err = createHttpError(401, 'can not access this path')
     // // next(err) // next me kuch bhi doge wo isko error type hi lega

@@ -9,7 +9,9 @@ describe.skip('App', () => {
     })
 
     it('should return successfull statusCode 200 ', async () => {
-        const response = await request(app).get('/').send()
+        const response = await request(app as any)
+            .get('/')
+            .send()
 
         expect(response.statusCode).toBe(200)
     })
