@@ -2,7 +2,8 @@ import { Repository } from 'typeorm'
 import { User } from '../entity/User'
 import { UserData } from '../types'
 import createHttpError from 'http-errors'
-
+import { Roles } from '../constants/roles'
+import bcrypt from 'bcrypt'
 export class UserService {
     userRepository: Repository<User>
     constructor(userRepository: Repository<User>) {
@@ -10,12 +11,27 @@ export class UserService {
     }
 
     async create({ firstName, lastName, email, password }: UserData) {
+        // password hashing --> read about salt and rounds in more detail
+
+        const user = await this.userRepository.findOne({
+            where: { email: email },
+        })
+
+        if (user) {
+            const err = createHttpError(403, 'Email already Exists')
+            throw err
+        }
+
+        const rounds = 10
+        const hashedPassword = await bcrypt.hash(password, rounds)
+
         try {
             const user = this.userRepository.create({
                 firstName,
                 lastName,
                 email,
-                password,
+                password: hashedPassword,
+                role: Roles.CUSTOMER,
             })
             await this.userRepository.save(user)
             return user // Return the saved user

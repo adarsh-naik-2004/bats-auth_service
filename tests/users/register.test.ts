@@ -2,8 +2,8 @@ import request from 'supertest'
 import app from '../../src/app'
 import { DataSource } from 'typeorm'
 import { AppDataSource } from '../../src/config/data-source'
-import { truncateTable } from '../utils'
 import { User } from '../../src/entity/User'
+import { Roles } from '../../src/constants/roles'
 
 describe('POST /auth/register', () => {
     // divide kardo happy and sad path
@@ -15,7 +15,8 @@ describe('POST /auth/register', () => {
     })
 
     beforeEach(async () => {
-        await truncateTable(connection)
+        await connection.dropDatabase()
+        await connection.synchronize()
     })
 
     afterAll(async () => {
@@ -113,6 +114,75 @@ describe('POST /auth/register', () => {
             expect((response.body as Record<string, string>).id).toBe(
                 users[0].id,
             )
+        })
+        it('should allow only users to register', async () => {
+            // AAA method to write tests
+
+            // ARRANGE DATA
+            const userData = {
+                firstName: 'Adarsh',
+                lastName: 'Naik',
+                email: 'adarshnaik270@gmail.com',
+                password: 'password',
+            }
+
+            // ACT
+            const response = await request(app as any)
+                .post('/auth/register')
+                .send(userData)
+
+            // ASSERT -> EXPECTED
+            const userRepository = connection.getRepository(User)
+            const users = await userRepository.find()
+            expect(users[0]).toHaveProperty('role')
+            expect(users[0].role).toBe(Roles.CUSTOMER)
+        })
+        it('should store hased passwords in databse', async () => {
+            // AAA method to write tests
+
+            // ARRANGE DATA
+            const userData = {
+                firstName: 'Adarsh',
+                lastName: 'Naik',
+                email: 'adarshnaik270@gmail.com',
+                password: 'password',
+            }
+
+            // ACT
+            const response = await request(app as any)
+                .post('/auth/register')
+                .send(userData)
+
+            // ASSERT -> EXPECTED
+            const userRepository = connection.getRepository(User)
+            const users = await userRepository.find()
+            expect(users[0].password).not.toBe(userData.password)
+            expect(users[0].password).toHaveLength(60)
+            // console.log(users[0].password)
+        })
+        it('should return 403 status code if email already exists', async () => {
+            // AAA method to write tests
+
+            // ARRANGE DATA
+            const userData = {
+                firstName: 'Adarsh',
+                lastName: 'Naik',
+                email: 'adarshnaik270@gmail.com',
+                password: 'password',
+            }
+
+            const userRepository = connection.getRepository(User)
+            await userRepository.save({ ...userData, role: Roles.CUSTOMER })
+
+            // ACT
+            const response = await request(app as any)
+                .post('/auth/register')
+                .send(userData)
+
+            // ASSERT -> EXPECTED
+            expect(response.statusCode).toBe(403)
+            const users = await userRepository.find()
+            expect(users).toHaveLength(1)
         })
     })
     describe('Fields are missing', () => {})
