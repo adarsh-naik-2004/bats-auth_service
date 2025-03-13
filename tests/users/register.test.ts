@@ -4,6 +4,8 @@ import { DataSource } from 'typeorm'
 import { AppDataSource } from '../../src/config/data-source'
 import { User } from '../../src/entity/User'
 import { Roles } from '../../src/constants/roles'
+import { isJWT } from '../utils'
+import { RefreshToken } from '../../src/entity/RefreshToken'
 
 describe('POST /auth/register', () => {
     // divide kardo happy and sad path
@@ -183,6 +185,72 @@ describe('POST /auth/register', () => {
             expect(response.statusCode).toBe(403)
             const users = await userRepository.find()
             expect(users).toHaveLength(1)
+        })
+        it('should return the access and refresh token in a cookie', async () => {
+            // AAA method to write tests
+
+            // ARRANGE DATA
+            const userData = {
+                firstName: 'Adarsh',
+                lastName: 'Naik',
+                email: 'adarshnaik270@gmail.com',
+                password: 'password',
+            }
+
+            // ACT
+            const response = await request(app as any)
+                .post('/auth/register')
+                .send(userData)
+
+            interface Headers {
+                ['set-cookies']: string[]
+            }
+
+            // ASSERT -> EXPECTED
+
+            let accessToken = null
+            let refreshToken = null
+            const cookiesHeader = response.headers['set-cookie']
+            const cookies: string[] = Array.isArray(cookiesHeader)
+                ? cookiesHeader
+                : [cookiesHeader]
+
+            cookies.forEach((cookie: string) => {
+                if (cookie.startsWith('accessToken=')) {
+                    accessToken = cookie.split(';')[0].split('=')[1]
+                }
+
+                if (cookie.startsWith('refreshToken=')) {
+                    refreshToken = cookie.split(';')[0].split('=')[1]
+                }
+            })
+
+            expect(accessToken).not.toBeNull()
+            expect(refreshToken).not.toBeNull()
+
+            expect(isJWT(accessToken)).toBeTruthy()
+            expect(isJWT(refreshToken)).toBeTruthy()
+        })
+        it('should store the refresh token in database', async () => {
+            // AAA method to write tests
+
+            // ARRANGE DATA
+            const userData = {
+                firstName: 'Adarsh',
+                lastName: 'Naik',
+                email: 'adarshnaik270@gmail.com',
+                password: 'password',
+            }
+
+            // ACT
+            const response = await request(app as any)
+                .post('/auth/register')
+                .send(userData)
+
+            // ASSERT -> EXPECTED
+            const refreshTokenRepo = connection.getRepository(RefreshToken)
+            const refreshTokens = await refreshTokenRepo.find()
+            expect(refreshTokens).toHaveLength(1)
         })
     })
 
