@@ -249,8 +249,14 @@ describe('POST /auth/register', () => {
 
             // ASSERT -> EXPECTED
             const refreshTokenRepo = connection.getRepository(RefreshToken)
-            const refreshTokens = await refreshTokenRepo.find()
-            expect(refreshTokens).toHaveLength(1)
+            const tokens = await refreshTokenRepo
+                .createQueryBuilder('refreshToken')
+                .where('refreshToken.userId = :userId', {
+                    userId: (response.body as Record<string, string>).id,
+                })
+                .getMany()
+
+            expect(tokens).toHaveLength(1)
         })
     })
 

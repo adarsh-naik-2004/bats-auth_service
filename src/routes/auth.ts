@@ -6,13 +6,16 @@ import { User } from '../entity/User'
 import logger from '../config/logger'
 import { body } from 'express-validator'
 import registerValidator from '../validators/register_validator'
+import { TokenService } from '../services/TokenService'
 
 const router = express.Router()
 
 // Initialize User Repository & Service
 const userRepository = AppDataSource.getRepository(User)
 const userService = new UserService(userRepository)
-const authController = new AuthController(userService, logger)
+
+const tokenService = new TokenService()
+const authController = new AuthController(userService, logger, tokenService)
 
 // Define Routes
 router.post(
