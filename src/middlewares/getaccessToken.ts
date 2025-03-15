@@ -4,9 +4,7 @@ import jwksClient from 'jwks-rsa'
 import { Config } from '../config'
 import { AuthCookie } from '../types'
 
- 
 export default expressjwt({
-     
     secret: jwksClient.expressJwtSecret({
         jwksUri: Config.JWKS_URI!,
         cache: true,

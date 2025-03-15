@@ -9,8 +9,10 @@ import registerValidator from '../validators/register_validator'
 import { TokenService } from '../services/TokenService'
 import loginValidator from '../validators/login_validator'
 import { PasswordService } from '../services/PasswordService'
-import getacess from '../middlewares/getaccess'
+import getaccess from '../middlewares/getaccessToken'
 import { AuthRequest } from '../types'
+import checkRefreshToken from '../middlewares/checkRefreshToken'
+import parseRefreshToken from '../middlewares/parseRefreshToken'
 
 const router = express.Router()
 
@@ -42,8 +44,23 @@ router.post(
         await authController.login(req, res, next)
     },
 )
-router.get('/self', getacess, async (req: Request, res: Response) => {
+router.get('/self', getaccess, async (req: Request, res: Response) => {
     await authController.self(req as AuthRequest, res)
 })
+router.post(
+    '/refresh',
+    checkRefreshToken,
+    async (req: Request, res: Response, next: NextFunction) => {
+        await authController.refresh(req as AuthRequest, res, next)
+    },
+)
+
+router.post(
+    '/logout',
+    getaccess,
+    parseRefreshToken,
+    (req: Request, res: Response, next: NextFunction) =>
+        authController.logout(req as AuthRequest, res, next),
+)
 
 export default router

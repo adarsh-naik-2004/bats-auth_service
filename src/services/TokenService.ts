@@ -49,4 +49,9 @@ export class TokenService {
         })
         return newRefreshToken
     }
+
+    async deleteRefreshToken(tokenId: number) {
+        const refreshTokenRepo = AppDataSource.getRepository(RefreshToken)
+        return await refreshTokenRepo.delete({ id: tokenId })
+    }
 }
