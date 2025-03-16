@@ -12,9 +12,9 @@ export const AppDataSource = new DataSource({
     password: Config.DB_PASSWORD,
     database: Config.DB_NAME,
     // synchronize should be turned off before production
-    synchronize: true,
+    synchronize: false,
     logging: false,
     entities: [User, RefreshToken],
-    migrations: [],
+    migrations: ['src/migration/*.ts'],
     subscribers: [],
 })
