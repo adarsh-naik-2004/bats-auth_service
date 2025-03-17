@@ -2,6 +2,8 @@ import express, { Request, Response, NextFunction } from 'express'
 import logger from './config/logger'
 import { HttpError } from 'http-errors'
 import authRouter from './routes/auth'
+import storeRouter from './routes/store'
+import userRouter from './routes/user'
 import 'reflect-metadata'
 import cookieParser from 'cookie-parser'
 
@@ -26,7 +28,8 @@ app.get('/', (req, res) => {
 })
 
 app.use('/auth', authRouter)
-
+app.use('/stores', storeRouter)
+app.use('/users', userRouter)
 // global error handler
 
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {

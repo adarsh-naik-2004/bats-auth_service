@@ -10,6 +10,7 @@ import { AppDataSource } from '../config/data-source'
 import { RefreshToken } from '../entity/RefreshToken'
 import { TokenService } from '../services/TokenService'
 import { PasswordService } from '../services/PasswordService'
+import { Roles } from '../constants/roles'
 export class AuthController {
     userService: UserService
     logger: Logger
@@ -52,6 +53,7 @@ export class AuthController {
                 lastName,
                 email,
                 password,
+                role: Roles.CUSTOMER,
             })
 
             const payload: JwtPayload = {
@@ -111,7 +113,7 @@ export class AuthController {
         // reponse return (id)
 
         try {
-            const user = await this.userService.findbyEmail(email)
+            const user = await this.userService.findbyEmailWithPassword(email)
 
             if (!user) {
                 const error = createHttpError(400, 'Email does not exist')

@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
+import { Store } from './Store'
 
-@Entity()
+@Entity({ name: 'users' })
 export class User {
     @PrimaryGeneratedColumn()
     id: number
@@ -14,9 +15,12 @@ export class User {
     @Column({ unique: true })
     email: string
 
-    @Column()
+    @Column({ select: false })
     password: string
 
     @Column()
     role: string
+
+    @ManyToOne(() => Store)
+    store: Store
 }

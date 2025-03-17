@@ -4,7 +4,7 @@ import { DataSource } from 'typeorm'
 import { AppDataSource } from '../../src/config/data-source'
 import { User } from '../../src/entity/User'
 import { Roles } from '../../src/constants/roles'
-import { isJWT } from '../utils'
+import { isJWT } from '../../src/utils'
 import { RefreshToken } from '../../src/entity/RefreshToken'
 
 describe('POST /auth/register', () => {
@@ -157,7 +157,7 @@ describe('POST /auth/register', () => {
 
             // ASSERT -> EXPECTED
             const userRepository = connection.getRepository(User)
-            const users = await userRepository.find()
+            const users = await userRepository.find({ select: ['password'] })
             expect(users[0].password).not.toBe(userData.password)
             expect(users[0].password).toHaveLength(60)
             // console.log(users[0].password)

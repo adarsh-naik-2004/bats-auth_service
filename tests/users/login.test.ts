@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 import request from 'supertest'
 import { AppDataSource } from '../../src/config/data-source'
 import app from '../../src/app'
-import { isJWT } from '../utils'
+import { isJWT } from '../../src/utils'
 import { User } from '../../src/entity/User'
 import { Roles } from '../../src/constants/roles'
 
