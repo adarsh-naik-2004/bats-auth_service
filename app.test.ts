@@ -1,5 +1,5 @@
 import app from './src/app'
-import { calculateDiscount } from './src/utils'
+import { calculateDiscount } from './tests/utils'
 import request from 'supertest'
 
 describe.skip('App', () => {

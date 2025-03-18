@@ -4,7 +4,7 @@ import { DataSource } from 'typeorm'
 import { AppDataSource } from '../../src/config/data-source'
 import { User } from '../../src/entity/User'
 import { Roles } from '../../src/constants/roles'
-import { isJWT } from '../../src/utils'
+import { isJWT } from '../utils'
 import { RefreshToken } from '../../src/entity/RefreshToken'
 
 describe('POST /auth/register', () => {

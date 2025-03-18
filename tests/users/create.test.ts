@@ -6,7 +6,7 @@ import app from '../../src/app'
 import { Roles } from '../../src/constants/roles'
 import { User } from '../../src/entity/User'
 import { Store } from '../../src/entity/Store'
-import { createStore } from '../../src/utils'
+import { createStore } from '../utils'
 
 describe('POST /users', () => {
     let connection: DataSource
