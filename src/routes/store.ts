@@ -9,6 +9,8 @@ import { Roles } from '../constants/roles'
 import storeValidator from '../validators/store_validator'
 import { CreateStoreRequest } from '../types'
 import { Store } from '../entity/Store'
+import list_users_validator from '../validators/list_users_validator'
+import { Request } from 'express-jwt'
 
 const router = express.Router()
 
@@ -42,11 +44,15 @@ router.patch(
 
 router.get(
     '/',
-    async (req, res, next) => await storeController.getAll(req, res, next),
+    list_users_validator,
+    async (req: Request, res: Response, next: NextFunction) =>
+        await storeController.getAll(req, res, next),
 )
 
 router.get(
     '/:id',
+    getaccess,
+    canAccess([Roles.ADMIN]),
     async (req, res, next) => await storeController.getOne(req, res, next),
 )
 

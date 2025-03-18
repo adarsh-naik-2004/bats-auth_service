@@ -6,9 +6,10 @@ import storeRouter from './routes/store'
 import userRouter from './routes/user'
 import 'reflect-metadata'
 import cookieParser from 'cookie-parser'
+import path from 'path'
 
 const app = express()
-app.use(express.static('public'))
+app.use(express.static(path.join(process.cwd(), 'public')))
 app.use(cookieParser())
 app.use(express.json())
 
