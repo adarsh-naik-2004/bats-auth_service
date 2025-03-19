@@ -9,7 +9,7 @@ import cookieParser from 'cookie-parser'
 import path from 'path'
 
 const app = express()
-app.use(express.static(path.join(process.cwd(), 'public')))
+app.use(express.static(path.join(__dirname, '..', 'public')))
 app.use(cookieParser())
 app.use(express.json())
 
