@@ -27,7 +27,7 @@ RUN npm ci --ignore-scripts --legacy-peer-deps
 # Copy built files (including public, keys, .env.dev, logs, etc.) from the builder stage
 COPY --from=builder /app/dist ./
 
-EXPOSE 7373
+EXPOSE 7371
 
 # Since your built structure has src/server.js relative to /app,
 # we run the server with:
