@@ -7,8 +7,8 @@ import { validationResult } from 'express-validator'
 
 export class StoreController {
     constructor(
-        private storeService: StoreService,
-        private logger: Logger,
+        private readonly storeService: StoreService,
+        private readonly logger: Logger,
     ) {}
 
     async create(req: CreateStoreRequest, res: Response, next: NextFunction) {

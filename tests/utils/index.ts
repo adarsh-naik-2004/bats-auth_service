@@ -32,6 +32,7 @@ export const isJWT = (token: string | null): boolean => {
         })
         return true
     } catch (error) {
+        console.log('Invalid jwt token format', error)
         return false
     }
 }
