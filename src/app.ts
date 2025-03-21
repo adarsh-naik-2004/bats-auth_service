@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
     // const err = createHttpError(401, 'can not access this path')
     // // next(err) // next me kuch bhi doge wo isko error type hi lega
     // throw(err)
-    res.send('yeeeeeeeeee')
+    res.send('yeeeeeeee')
 })
 
 app.use('/auth', authRouter)
