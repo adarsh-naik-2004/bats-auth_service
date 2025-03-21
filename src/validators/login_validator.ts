@@ -1,4 +1,4 @@
-import { body, checkSchema } from 'express-validator'
+import { checkSchema } from 'express-validator'
 
 export default checkSchema({
     email: {

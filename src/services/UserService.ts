@@ -2,8 +2,7 @@ import { Repository } from 'typeorm'
 import { User } from '../entity/User'
 import { UserData, LimitedUserData } from '../types'
 import createHttpError from 'http-errors'
-import { Roles } from '../constants/roles'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 export class UserService {
     userRepository: Repository<User>
     constructor(userRepository: Repository<User>) {

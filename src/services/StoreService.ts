@@ -3,7 +3,7 @@ import { IStore } from '../types'
 import { Store } from '../entity/Store'
 
 export class StoreService {
-    constructor(private storeRepository: Repository<Store>) {}
+    constructor(private readonly storeRepository: Repository<Store>) {}
 
     async create(storeData: IStore) {
         return await this.storeRepository.save(storeData)
