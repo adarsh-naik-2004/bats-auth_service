@@ -6,22 +6,10 @@ import { User } from '../entity/User'
 import { AppDataSource } from '../config/data-source'
 export class TokenService {
     generateAccessToken(payload: JwtPayload) {
-        let privateKey: string
         if (!Config.PRIVATE_KEY) {
-            const error = createHttpError(
-                500,
-                'Error while reading private key',
-            )
-            throw error
+            throw createHttpError(500, 'Error while reading private key')
         }
-        try {
-            privateKey = Config.PRIVATE_KEY
-        } catch (error) {
-            const err = createHttpError(500, 'Error while reading private key')
-            throw err
-        }
-
-        const accessToken = sign(payload, privateKey, {
+        const accessToken = sign(payload, Config.PRIVATE_KEY, {
             algorithm: 'RS256',
             expiresIn: '1h',
             issuer: 'auth_service',
