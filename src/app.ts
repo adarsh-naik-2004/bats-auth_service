@@ -7,8 +7,12 @@ import userRouter from './routes/user'
 import 'reflect-metadata'
 import cookieParser from 'cookie-parser'
 import path from 'path'
+import cors from 'cors'
+import { Config } from './config'
 
 const app = express()
+const ALLOWED_DOMAINS = [Config.ADMIN_UI_DOMAIN]
+app.use(cors({ origin: ALLOWED_DOMAINS as string[], credentials: true }))
 app.use(express.static(path.join(__dirname, '..', 'public')))
 app.use(cookieParser())
 app.use(express.json())
