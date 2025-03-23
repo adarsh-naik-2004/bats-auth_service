@@ -68,9 +68,10 @@ export class UserService {
     }
 
     async findbyId(id: number) {
-        // console.log('Searching user with ID:', id)
-        const user = await this.userRepository.findOneBy({ id })
-        // console.log('User found:', user)
+        const user = await this.userRepository.findOne({
+            where: { id },
+            relations: { store: true }, // Include related store entity
+        })
         return user
     }
 

@@ -11,7 +11,7 @@ export class TokenService {
         }
         const accessToken = sign(payload, Config.PRIVATE_KEY, {
             algorithm: 'RS256',
-            expiresIn: '1h',
+            expiresIn: '1d',
             issuer: 'auth_service',
         })
         return accessToken
@@ -20,7 +20,7 @@ export class TokenService {
     generateRefreshToken(payload: JwtPayload) {
         const refreshToken = sign(payload, Config.REFRESH_TOKEN_SECRET!, {
             algorithm: 'HS256',
-            expiresIn: '24h',
+            expiresIn: '1y',
             issuer: 'auth_service',
             jwtid: String(payload.id),
         })
@@ -28,7 +28,7 @@ export class TokenService {
     }
 
     async saveRefreshToken(user: User) {
-        const extra = 1000 * 60 * 60 * 24
+        const extra = 1000 * 60 * 60 * 24 * 365
         const refreshTokenRepo = AppDataSource.getRepository(RefreshToken)
         const newRefreshToken = await refreshTokenRepo.save({
             user: user,
