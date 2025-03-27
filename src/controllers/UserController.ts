@@ -15,7 +15,7 @@ export class UserController {
         // Validation
         const result = validationResult(req)
         if (!result.isEmpty()) {
-            return res.status(400).json({ errors: result.array() })
+            return next(createHttpError(400, result.array()[0].msg as string))
         }
 
         const { firstName, lastName, email, password, storeId, role } = req.body
@@ -44,7 +44,7 @@ export class UserController {
             return res.status(400).json({ errors: result.array() })
         }
 
-        const { firstName, lastName, role } = req.body
+        const { firstName, lastName, role, email, storeId } = req.body
         const userId = req.params.id
 
         if (isNaN(Number(userId))) {
@@ -59,6 +59,8 @@ export class UserController {
                 firstName,
                 lastName,
                 role,
+                email,
+                storeId,
             })
 
             this.logger.info('User has been updated', { id: userId })

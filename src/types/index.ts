@@ -47,6 +47,8 @@ export interface LimitedUserData {
     firstName: string
     lastName: string
     role: string
+    email: string
+    storeId: number
 }
 
 export interface UpdateUserRequest extends Request {
@@ -58,4 +60,10 @@ export interface UserQueryParams {
     currentPage: number
     q: string
     role: string
+}
+
+export interface StoreQueryParams {
+    q: string
+    perPage: number
+    currentPage: number
 }

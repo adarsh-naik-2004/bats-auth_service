@@ -77,13 +77,15 @@ export class UserService {
 
     async update(
         userId: number,
-        { firstName, lastName, role }: LimitedUserData,
+        { firstName, lastName, role, email, storeId }: LimitedUserData,
     ) {
         try {
             return await this.userRepository.update(userId, {
                 firstName,
                 lastName,
                 role,
+                email,
+                store: storeId ? { id: storeId } : undefined,
             })
         } catch (err) {
             const error = createHttpError(
