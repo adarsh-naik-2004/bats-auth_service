@@ -34,7 +34,7 @@ export default checkSchema({
                 if (role === 'admin') {
                     return true
                 } else {
-                    return !!value
+                    return value !== undefined && value !== null
                 }
             },
         },

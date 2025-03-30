@@ -40,7 +40,10 @@ router.patch(
         req: UpdateUserRequest,
         res: Response,
         next: NextFunction,
-    ): Promise<any> => await userController.update(req, res, next),
+    ): Promise<any> => {
+        // console.log('Received PATCH request with body:', req.body);
+        await userController.update(req, res, next)
+    },
 )
 
 router.get(

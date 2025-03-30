@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
 import { StoreService } from '../services/StoreService'
-import { CreateStoreRequest } from '../types'
+import { CreateStoreRequest, StoreQueryParams } from '../types'
 import { Logger } from 'winston'
 import createHttpError from 'http-errors'
-import { validationResult } from 'express-validator'
+import { matchedData, validationResult } from 'express-validator'
 
 export class StoreController {
     constructor(
@@ -63,11 +63,19 @@ export class StoreController {
     }
 
     async getAll(req: Request, res: Response, next: NextFunction) {
+        const validatedQuery = matchedData(req, { onlyValidData: true })
         try {
-            const stores = await this.storeService.getAll()
+            const [stores, count] = await this.storeService.getAll(
+                validatedQuery as StoreQueryParams,
+            )
 
             this.logger.info('All store have been fetched')
-            res.json(stores)
+            res.json({
+                currentPage: validatedQuery.currentPage as number,
+                perPage: validatedQuery.perPage as number,
+                total: count,
+                data: stores,
+            })
         } catch (error) {
             next(error)
         }
