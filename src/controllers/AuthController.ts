@@ -8,6 +8,7 @@ import createHttpError from 'http-errors'
 import { TokenService } from '../services/TokenService'
 import { PasswordService } from '../services/PasswordService'
 import { Roles } from '../constants/roles'
+import { Config } from '../config'
 export class AuthController {
     userService: UserService
     logger: Logger
@@ -56,6 +57,11 @@ export class AuthController {
             const payload: JwtPayload = {
                 sub: String(user.id),
                 role: user.role,
+                store: user.store ? String(user.store.id) : '',
+
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
             }
 
             const accessToken = this.tokenService.generateAccessToken(payload)
@@ -69,14 +75,14 @@ export class AuthController {
             })
 
             res.cookie('accessToken', accessToken, {
-                domain: 'localhost',
+                domain: Config.MAIN_DOMAIN,
                 sameSite: 'strict',
                 maxAge: 1000 * 60 * 60, // 1 hr
                 httpOnly: true,
             })
 
             res.cookie('refreshToken', refreshToken, {
-                domain: 'localhost',
+                domain: Config.MAIN_DOMAIN,
                 sameSite: 'strict',
                 maxAge: 1000 * 60 * 60 * 24, // 1 day
                 httpOnly: true,
@@ -132,6 +138,10 @@ export class AuthController {
             const payload: JwtPayload = {
                 sub: String(user.id),
                 role: user.role,
+                store: user.store ? String(user.store.id) : '',
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
             }
 
             const accessToken = this.tokenService.generateAccessToken(payload)
@@ -145,14 +155,14 @@ export class AuthController {
             })
 
             res.cookie('accessToken', accessToken, {
-                domain: 'localhost',
+                domain: Config.MAIN_DOMAIN,
                 sameSite: 'strict',
                 maxAge: 1000 * 60 * 60, // 1 hr
                 httpOnly: true,
             })
 
             res.cookie('refreshToken', refreshToken, {
-                domain: 'localhost',
+                domain: Config.MAIN_DOMAIN,
                 sameSite: 'strict',
                 maxAge: 1000 * 60 * 60 * 24, // 1 day
                 httpOnly: true,
@@ -180,6 +190,10 @@ export class AuthController {
             const payload: JwtPayload = {
                 sub: req.auth.sub,
                 role: req.auth.role,
+                store: req.auth.store,
+                firstName: req.auth.firstName,
+                lastName: req.auth.lastName,
+                email: req.auth.email,
             }
 
             const accessToken = this.tokenService.generateAccessToken(payload)
@@ -205,14 +219,14 @@ export class AuthController {
             })
 
             res.cookie('accessToken', accessToken, {
-                domain: 'localhost',
+                domain: Config.MAIN_DOMAIN,
                 sameSite: 'strict',
                 maxAge: 1000 * 60 * 60, // 1h
                 httpOnly: true, // Very important
             })
 
             res.cookie('refreshToken', refreshToken, {
-                domain: 'localhost',
+                domain: Config.MAIN_DOMAIN,
                 sameSite: 'strict',
                 maxAge: 1000 * 60 * 60 * 24 * 365, // 1y
                 httpOnly: true, // Very important

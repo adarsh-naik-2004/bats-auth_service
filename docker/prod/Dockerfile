@@ -1,34 +1,43 @@
 # syntax=docker/dockerfile:1
 
-FROM node:18-alpine AS builder
+ARG NODE_VERSION=21.7.1
 
-WORKDIR /app
+# ---------- BUILDER STAGE ----------
+FROM node:${NODE_VERSION}-alpine AS builder
 
-# Copy package files and install dependencies using legacy-peer-deps to bypass conflicts
-COPY package*.json ./
-RUN npm ci --legacy-peer-deps
+WORKDIR /home/node/app
 
-# Copy the entire project (including src, public, keys, .env.dev, etc.)
+# Install dependencies with cache and bind mounts
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=cache,target=/root/.npm \
+    npm ci
+
+# Copy remaining app files and build
 COPY . .
 
-# Build the project (this runs your build script which copies public, keys, and .env.dev to dist)
 RUN npm run build
 
-FROM node:18-alpine AS production
+# ---------- RUNNER STAGE ----------
+FROM node:${NODE_VERSION}-alpine AS runner
+
+USER node
+
+RUN mkdir -p /home/node/app
+
+WORKDIR /home/node/app
 
 ENV NODE_ENV=production
 
-WORKDIR /app
+# Install production dependencies
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=cache,target=/root/.npm \
+    npm ci --omit=dev --ignore-scripts
 
-# Copy package files and install production dependencies with legacy-peer-deps flag and ignoring scripts
-COPY package*.json ./
-RUN npm ci --ignore-scripts --legacy-peer-deps
+# Copy build artifacts from builder stage
+COPY --from=builder --chown=node:node /home/node/app/dist ./
 
-# Copy built files (including public, keys, .env.dev, logs, etc.) from the builder stage
-COPY --from=builder /app/dist ./
+EXPOSE 5501
 
-EXPOSE 7371
-
-# Since your built structure has src/server.js relative to /app,
-# we run the server with:
 CMD ["node", "src/server.js"]

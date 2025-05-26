@@ -64,6 +64,9 @@ export class UserService {
                 'role',
                 'password',
             ],
+            relations: {
+                store: true,
+            },
         })
     }
 
