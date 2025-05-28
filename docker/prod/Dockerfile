@@ -37,9 +37,6 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 
 # Copy build artifacts from builder stage
 COPY --from=builder --chown=node:node /home/node/app/dist ./
-COPY --from=builder --chown=node:node /home/node/app/package.json ./
-COPY --from=builder --chown=node:node /home/node/app/package-lock.json ./
-COPY --from=builder --chown=node:node /home/node/app/public ./public
 
 EXPOSE 5501
 

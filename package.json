@@ -6,7 +6,7 @@
    "scripts": {
       "test": "jest --no-cache --coverage --all --runInBand",
       "dev": "cross-env NODE_ENV=dev nodemon --legacy-watch src/server.ts",
-      "build": "tsc",
+      "build": "tsc && cp -r public dist/",
       "formatfix": "prettier . --write",
       "formatcheck": "prettier . --check",
       "lintfix": "eslint . --fix",
