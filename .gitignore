@@ -20,7 +20,6 @@ pids
 lib-cov
 
 keys/
-public/
 
 # Coverage directory used by tools like istanbul
 coverage
