@@ -17,13 +17,12 @@ RUN npm run build
 FROM node:${NODE_VERSION}-alpine AS runner
 
 USER node
-
 WORKDIR /home/node/app
 
 ENV NODE_ENV=production
 
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+RUN npm set-script prepare "" && npm ci --omit=dev
 
 COPY --from=builder --chown=node:node /home/node/app/dist ./dist
 COPY --from=builder --chown=node:node /home/node/app/public ./public
