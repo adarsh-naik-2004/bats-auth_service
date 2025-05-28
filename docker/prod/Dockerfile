@@ -7,15 +7,10 @@ FROM node:${NODE_VERSION}-alpine AS builder
 
 WORKDIR /home/node/app
 
-# Install dependencies with cache and bind mounts
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=package-lock.json,target=package-lock.json \
-    --mount=type=cache,target=/root/.npm \
-    npm ci
+COPY package.json package-lock.json ./
+RUN npm ci
 
-# Copy remaining app files and build
 COPY . .
-
 RUN npm run build
 
 # ---------- RUNNER STAGE ----------
@@ -23,25 +18,16 @@ FROM node:${NODE_VERSION}-alpine AS runner
 
 USER node
 
-RUN mkdir -p /home/node/app
-
 WORKDIR /home/node/app
 
 ENV NODE_ENV=production
 
-# Install production dependencies
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=package-lock.json,target=package-lock.json \
-    --mount=type=cache,target=/root/.npm \
-    npm ci --omit=dev --ignore-scripts
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
 
-# Copy build artifacts from builder stage
-COPY --from=builder --chown=node:node /home/node/app/dist ./
-COPY --from=builder --chown=node:node /home/node/app/package.json ./
-COPY --from=builder --chown=node:node /home/node/app/package-lock.json ./
-COPY --from=builder --chown=node:node /home/node/app/.env ./
+COPY --from=builder --chown=node:node /home/node/app/dist ./dist
 COPY --from=builder --chown=node:node /home/node/app/public ./public
 
 EXPOSE 5501
 
-CMD ["node", "src/server.js"]
+CMD ["node", "dist/server.js"]
