@@ -1,6 +1,6 @@
 import { JwtPayload, sign } from 'jsonwebtoken'
 import createHttpError from 'http-errors'
-import { Config } from '../config'
+import { Config } from '../config/index'
 import { RefreshToken } from '../entity/RefreshToken'
 import { User } from '../entity/User'
 import { AppDataSource } from '../config/data-source'

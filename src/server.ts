@@ -1,4 +1,4 @@
-import { Config } from './config'
+import { Config } from './config/index'
 import app from './app'
 import logger from './config/logger'
 import { AppDataSource } from './config/data-source'

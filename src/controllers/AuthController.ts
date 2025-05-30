@@ -8,7 +8,7 @@ import createHttpError from 'http-errors'
 import { TokenService } from '../services/TokenService'
 import { PasswordService } from '../services/PasswordService'
 import { Roles } from '../constants/roles'
-import { Config } from '../config'
+import { Config } from '../config/index'
 export class AuthController {
     userService: UserService
     logger: Logger
@@ -75,16 +75,16 @@ export class AuthController {
             })
 
             res.cookie('accessToken', accessToken, {
-                domain: Config.MAIN_DOMAIN,
-                sameSite: 'strict',
-                maxAge: 1000 * 60 * 60, // 1 hr
+                sameSite: 'none',
+                secure: true,
+                maxAge: 1000 * 60 * 60, // 1h
                 httpOnly: true,
             })
 
             res.cookie('refreshToken', refreshToken, {
-                domain: Config.MAIN_DOMAIN,
-                sameSite: 'strict',
-                maxAge: 1000 * 60 * 60 * 24, // 1 day
+                sameSite: 'none',
+                secure: true,
+                maxAge: 1000 * 60 * 60 * 24 * 365, // 1y
                 httpOnly: true,
             })
 
@@ -155,16 +155,16 @@ export class AuthController {
             })
 
             res.cookie('accessToken', accessToken, {
-                domain: Config.MAIN_DOMAIN,
-                sameSite: 'strict',
-                maxAge: 1000 * 60 * 60, // 1 hr
+                sameSite: 'none',
+                secure: true,
+                maxAge: 1000 * 60 * 60, // 1h
                 httpOnly: true,
             })
 
             res.cookie('refreshToken', refreshToken, {
-                domain: Config.MAIN_DOMAIN,
-                sameSite: 'strict',
-                maxAge: 1000 * 60 * 60 * 24, // 1 day
+                sameSite: 'none',
+                secure: true,
+                maxAge: 1000 * 60 * 60 * 24 * 365, // 1y
                 httpOnly: true,
             })
 
@@ -219,17 +219,17 @@ export class AuthController {
             })
 
             res.cookie('accessToken', accessToken, {
-                domain: Config.MAIN_DOMAIN,
-                sameSite: 'strict',
+                sameSite: 'none',
+                secure: true,
                 maxAge: 1000 * 60 * 60, // 1h
-                httpOnly: true, // Very important
+                httpOnly: true,
             })
 
             res.cookie('refreshToken', refreshToken, {
-                domain: Config.MAIN_DOMAIN,
-                sameSite: 'strict',
+                sameSite: 'none',
+                secure: true,
                 maxAge: 1000 * 60 * 60 * 24 * 365, // 1y
-                httpOnly: true, // Very important
+                httpOnly: true,
             })
 
             this.logger.info('User has been logged in', { id: user.id })

@@ -6,7 +6,7 @@ import 'reflect-metadata'
 import cookieParser from 'cookie-parser'
 import path from 'path'
 import cors from 'cors'
-import { Config } from './config'
+import { Config } from './config/index'
 import { globalErrorHandler } from './middlewares/globalErrorHandler'
 
 const app = express()
