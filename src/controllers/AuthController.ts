@@ -75,6 +75,7 @@ export class AuthController {
             })
 
             res.cookie('accessToken', accessToken, {
+                domain: Config.MAIN_DOMAIN,
                 sameSite: 'none',
                 secure: true,
                 maxAge: 1000 * 60 * 60, // 1h
@@ -82,6 +83,7 @@ export class AuthController {
             })
 
             res.cookie('refreshToken', refreshToken, {
+                domain: Config.MAIN_DOMAIN,
                 sameSite: 'none',
                 secure: true,
                 maxAge: 1000 * 60 * 60 * 24 * 365, // 1y
@@ -155,6 +157,7 @@ export class AuthController {
             })
 
             res.cookie('accessToken', accessToken, {
+                domain: Config.MAIN_DOMAIN,
                 sameSite: 'none',
                 secure: true,
                 maxAge: 1000 * 60 * 60, // 1h
@@ -162,6 +165,7 @@ export class AuthController {
             })
 
             res.cookie('refreshToken', refreshToken, {
+                domain: Config.MAIN_DOMAIN,
                 sameSite: 'none',
                 secure: true,
                 maxAge: 1000 * 60 * 60 * 24 * 365, // 1y
@@ -219,6 +223,7 @@ export class AuthController {
             })
 
             res.cookie('accessToken', accessToken, {
+                domain: Config.MAIN_DOMAIN,
                 sameSite: 'none',
                 secure: true,
                 maxAge: 1000 * 60 * 60, // 1h
@@ -226,6 +231,7 @@ export class AuthController {
             })
 
             res.cookie('refreshToken', refreshToken, {
+                domain: Config.MAIN_DOMAIN,
                 sameSite: 'none',
                 secure: true,
                 maxAge: 1000 * 60 * 60 * 24 * 365, // 1y
