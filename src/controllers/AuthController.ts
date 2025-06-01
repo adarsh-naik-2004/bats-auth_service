@@ -255,8 +255,21 @@ export class AuthController {
             })
             this.logger.info('User has been logged out', { id: req.auth.sub })
 
-            res.clearCookie('accessToken')
-            res.clearCookie('refreshToken')
+            res.clearCookie('accessToken', {
+                domain: Config.MAIN_DOMAIN,
+                sameSite: 'none',
+                secure: true,
+                httpOnly: true,
+                path: '/',
+            })
+
+            res.clearCookie('refreshToken', {
+                domain: Config.MAIN_DOMAIN,
+                sameSite: 'none',
+                secure: true,
+                httpOnly: true,
+                path: '/',
+            })
             res.json({})
         } catch (error) {
             next(error)
